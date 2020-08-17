@@ -1,0 +1,11 @@
+{
+  "port": 4000,
+  "cassandraIp": "cassandra:9042",
+  "cassandraDataCenter": "datacenter1",
+  "cassandraKeyspace": "prices",
+  "cassandraTables": ["Coinbase", "Bittrex"],
+  "mongoDbConnectionString": "connectionStr",
+  "mongoDbName": "bcef",
+  "kafkaIp": "kafka:9092",
+  "kafkaTopics": ["Coinbase", "Bittrex"]
+}

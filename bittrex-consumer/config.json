@@ -1,0 +1,5 @@
+{
+  "cassandraIp": "cassandra",
+  "cassandraPort": "9042",
+  "kafkaBrokerIpPort": "kafka:9092"
+}

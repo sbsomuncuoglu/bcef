@@ -1,0 +1,69 @@
+version: '3'
+
+services:
+  cassandra:
+    container_name: cassandra
+    hostname: cassandra
+    image: cassandra
+    env_file:
+      - cassandra/cassandra.env
+    ports:
+      - "7199:7199" # JMX
+      - "7000:7000" # cluster communication
+      - "7001:7001" # cluster communication (SSL)
+      - "9042:9042" # native protocol clients
+      - "9160:9160" # thrift clients
+    volumes:
+      - "./cassandra/cassandra-init.sh:/cassandra-init.sh"
+    command: "sh /cassandra-init.sh"
+    healthcheck:
+      test: ["CMD-SHELL", "[ $$(nodetool statusgossip) = running ]"]
+
+  zookeeper:
+    container_name: zookeeper
+    hostname: zookeeper
+    image: wurstmeister/zookeeper
+    ports:
+      - "2181:2181"
+  
+  kafka:
+    container_name: kafka
+    hostname: kafka
+    image: wurstmeister/kafka
+    env_file:
+      - kafka/kafka.env
+    ports:
+      - "9092:9092"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  
+  coinbase-consumer:
+    container_name: coinbase-consumer
+    build: ./coinbase-consumer
+    depends_on:
+      - "cassandra"
+      - "kafka"
+    command: ["./wait-for-it.sh", "cassandra:9042", "-t", "90", "--strict", "--", "python3", "-u", "coinbase-consumer.py"]
+
+  bittrex-consumer:
+    container_name: bittrex-consumer
+    build: ./bittrex-consumer
+    depends_on:
+      - "cassandra"
+      - "kafka"
+    command: ["./wait-for-it.sh", "cassandra:9042", "-t", "90", "--strict", "--", "python3", "-u", "bittrex-consumer.py"]
+  
+  coinbase-api-service:
+    container_name: coinbase-api-service
+    build: ./coinbase-api-service
+    depends_on:
+      - "kafka"
+    command: ["./wait-for-it.sh", "kafka:9092", "-t", "60", "--strict", "--", "python3", "-u", "coinbase-service.py"]
+
+  bittrex-api-service:
+    container_name: bittrex-api-service
+    build: ./bittrex-api-service
+    depends_on:
+      - "kafka"
+    command: ["./wait-for-it.sh", "kafka:9092", "-t", "60", "--strict", "--", "python3", "-u", "bittrex-service.py"]
+    

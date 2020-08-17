@@ -11,7 +11,7 @@ export const store = new Vuex.Store({
     },
     mutations: {
       updateRow(state, newRow) {
-        console.log(newRow);
+        //console.log(newRow);
         const exchangeIndex = state.tableData.map(e => e.exchange).indexOf(newRow.exchange);
         if(exchangeIndex != -1) {
           for (const key of Object.keys(newRow)) { // Merge two objects
@@ -24,6 +24,7 @@ export const store = new Vuex.Store({
         }
       },
       loadInitialTableData(state, initialTableData) {
+        //console.log(initialTableData);
         if(state.tableData.length == 0) { // First load
           state.tableData = initialTableData;
         }

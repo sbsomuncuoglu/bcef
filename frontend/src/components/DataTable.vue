@@ -28,9 +28,13 @@
         this.$store.dispatch('loadInitialTableData', data);
         this.items = this.tableData || [];
       },
+      updateRow(row) {
+        this.$store.dispatch('updateRow', row);
+        this.items = this.tableData || [];
+      },
       getRealTimeData() {
         socket.on("newdata", fetchedData => {
-          this.loadInitialTableData(fetchedData);
+          this.updateRow(fetchedData);
         });
       },
       getMetaData() {
@@ -39,7 +43,7 @@
           (metadata => {
             this.$store.dispatch('updateCurrencies', metadata[0]);
             this.$store.dispatch('updateExchanges', metadata[1]);
-            this.loadNewTableData(metadata[2]);
+            this.loadInitialTableData(metadata[2]);
           })
         );  
       }

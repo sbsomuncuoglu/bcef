@@ -120,22 +120,35 @@ io.on("connection", socket => {
   }
 
   let priceObj2 = {
+    "exchange": "Coinbase",
+    "btc_buy": 11900.29,
+    "btc_sell": 11875.15,
+    "eth_buy": 421.45,
+    "eth_sell": 403.47
+  }
+
+  let priceObj3 = {
     "exchange": "Bittrex",
     "btc_buy": 11719.37,
     "btc_sell": 11698.59,
     "eth_buy": 427.41,
     "eth_sell": 412.67
   }
-  let randomArray = [priceObj1, priceObj2];
+
+  let priceObj4 = {
+    "exchange": "Bittrex",
+    "btc_buy": 11999.38,
+    "btc_sell": 11900.99,
+    "eth_buy": 473.44,
+    "eth_sell": 469.83
+  }
+
+  let randomArray = [priceObj1, priceObj2, priceObj3, priceObj4];
 
   setInterval(function() {
-    let randomInt = getRandomInt(10);
-    if(randomInt % 2 == 1) {
-      socket.broadcast.emit("newdata", priceObj1);
-    } else {
-      socket.broadcast.emit("newdata", priceObj2);
-    }
-  }, 5000);
+    let rand_int = getRandomInt(4);
+    socket.broadcast.emit("newdata", randomArray[rand_int]);
+  }, 10000);
 
   // kafkaConsumer.on('message', function (message) {
   //   // console.log('Kafka message:' + JSON.stringify(message));

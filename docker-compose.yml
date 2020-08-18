@@ -66,4 +66,20 @@ services:
     depends_on:
       - "kafka"
     command: ["./wait-for-it.sh", "kafka:9092", "-t", "60", "--strict", "--", "python3", "-u", "bittrex-service.py"]
+  
+  backend:
+    container_name: backend
+    hostname: backend
+    build: ./backend
+    depends_on:
+      - "cassandra"
+      - "kafka"
+    ports:
+      - "4000:4000"
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "8080:80"
     

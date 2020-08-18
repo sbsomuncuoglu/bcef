@@ -70,6 +70,7 @@ MongoClient.connect(config.mongoDbConnectionString, {
       });
     })
     .catch(error => console.error(error));
+    client.close();
   }
 );
 

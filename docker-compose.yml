@@ -76,6 +76,7 @@ services:
       - "kafka"
     ports:
       - "4000:4000"
+    command: ["./wait-for-it.sh", "kafka:9092", "-t", "60", "--strict", "--", "node", "server.js"]
 
   frontend:
     container_name: frontend

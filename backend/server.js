@@ -31,12 +31,6 @@ const cassandraQueries = [
   }
 ];
 
-const cassandraClient = new cassandra.Client({
-  contactPoints: [config.cassandraIp],
-  localDataCenter: config.cassandraDataCenter,
-  keyspace: config.cassandraKeyspace
-});
-
 MongoClient.connect(config.mongoDbConnectionString, {
   useUnifiedTopology: true }, 
   (err, client) => {
@@ -80,7 +74,13 @@ kafkaConsumer = new Consumer(
   kafkaClient,
   [ { topic: config.kafkaTopics[0], partitions: 0 }, { topic: config.kafkaTopics[1], partitions: 1 } ], 
   { autoCommit: false }
-); 
+);
+
+const cassandraClient = new cassandra.Client({
+  contactPoints: [config.cassandraIp],
+  localDataCenter: config.cassandraDataCenter,
+  keyspace: config.cassandraKeyspace
+});
 
 http.listen(config.port, () => {
   console.log('listening on *:' + config.port);

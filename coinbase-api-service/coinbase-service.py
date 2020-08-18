@@ -60,7 +60,7 @@ def main():
     _currencies = ['btc', 'eth'] #TODO: Pull this from database
     _targetCurrency = 'usd' #TODO: Pull this from database - support multiple target currencies
 
-    schedule.every(1).minutes.do(stream_prices, api_url_base=_api_url_base, currencies=_currencies, targetCurrency=_targetCurrency, kafkaProducer=_kafkaProducer)
+    schedule.every(5).minutes.do(stream_prices, api_url_base=_api_url_base, currencies=_currencies, targetCurrency=_targetCurrency, kafkaProducer=_kafkaProducer)
     while True:
       schedule.run_pending()
       time.sleep(1)

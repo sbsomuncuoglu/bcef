@@ -68,9 +68,9 @@ MongoClient.connect(config.mongoDbConnectionString, {
         });
         latestPrices.push(priceObj);
       });
+      client.close();
     })
     .catch(error => console.error(error));
-    client.close();
   }
 );
 

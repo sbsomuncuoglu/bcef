@@ -8,7 +8,7 @@
   import MetadataService from '@/services/MetadataService.js';
 
   import io from "socket.io-client";
-  let socket = io.connect("http://localhost:4000");
+  let socket = io.connect("http://18.215.135.131:4000");
 
   import { mapGetters } from 'vuex';
   

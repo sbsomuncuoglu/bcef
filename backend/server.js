@@ -75,7 +75,7 @@ MongoClient.connect(config.mongoDbConnectionString, {
 );
 
 let Consumer = kafka.Consumer;
-kafkaClient = new kafka.KafkaClient(config.kafkaIp);
+kafkaClient = new kafka.KafkaClient({kafkaHost: config.kafkaIp});
 kafkaConsumer = new Consumer(
   kafkaClient,
   [ { topic: config.kafkaTopics[0], partitions: 0 }, { topic: config.kafkaTopics[1], partitions: 1 } ], 

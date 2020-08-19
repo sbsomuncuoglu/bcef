@@ -17,9 +17,9 @@ export const store = new Vuex.Store({
           for (const key of Object.keys(newRow)) { // Merge two objects
             if (Object.prototype.hasOwnProperty.call(state.tableData[exchangeIndex], key)) {
               if(newRow[key] > state.tableData[exchangeIndex][key]) {
-                state.tableData[exchangeIndex][key] = newRow[key] + '(+)';
+                state.tableData[exchangeIndex][key] = newRow[key].toString() + ' (+)';
               } else if(newRow[key] < state.tableData[exchangeIndex][key]) {
-                state.tableData[exchangeIndex][key] = newRow[key] + '(-)';
+                state.tableData[exchangeIndex][key] = newRow[key].toString() + ' (-)';
               }
             }
           }  

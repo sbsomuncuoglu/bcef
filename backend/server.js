@@ -88,8 +88,12 @@ http.listen(config.port, () => {
 
 app.get('/metadata', (req, res) => {
   console.log('metadata called from frontend');
-  let metadata = [currencies, exchanges, latestPrices];
-  res.send(metadata);
+  try {
+    let metadata = [currencies, exchanges, latestPrices];
+    res.send(metadata);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 io.on("connection", socket => {
@@ -103,14 +107,24 @@ io.on("connection", socket => {
     // console.log(message.topic);
     // console.log(message['value'].currency_id);
 
-    messageObj = JSON.parse(message);
-    console.log(messageObj);
+    //messageObj = JSON.parse(message);
+    //console.log(messageObj);
+    console.log(message);
 
-    let priceObj = {};
-    priceObj['exchange'] = message['topic'];
-    priceObj[message.currency_id + '_buy'] = message['value']['buy_price'].toFixed(2);
-    priceObj[message.currency_id + '_sell'] = message['value']['sell_price'].toFixed(2);
+    try {
+      let priceObj = {};
+      // priceObj['exchange'] = message['topic'];
+      // priceObj[message.currency_id + '_buy'] = message['value']['buy_price'].toFixed(2);
+      // priceObj[message.currency_id + '_sell'] = message['value']['sell_price'].toFixed(2);
 
-    socket.broadcast.emit("newdata", priceObj);
+      priceObj['exchange'] = message.topic;
+      let messageValue = JSON.parse(message.value);
+      priceObj[messageValue.currency_id + '_buy'] = messageValue.buy_price.toFixed(2);
+      priceObj[messageValue.currency_id + '_sell'] = messageValue.sell_price.toFixed(2);
+  
+      socket.broadcast.emit("newdata", priceObj);
+    } catch (error) {
+      console.error(error);
+    }
   });
 });

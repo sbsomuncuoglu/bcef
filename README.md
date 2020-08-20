@@ -8,6 +8,8 @@
 <h3>How to Build/Run</h3>
 &nbsp;
 
+Live version is available at http://18.215.135.131:8080 between 12 pm - 6 pm EST.
+
 Under ```bcef``` directory, run ```docker-compose up -d```. 
 
 Sometimes it takes too long for Kafka to start and create topics. Even though the ```backend``` container waits for Kafka to start, it'll start before Kafka and fail when it exceeds the timeout. In that case, ```backend``` container should be restarted.  
